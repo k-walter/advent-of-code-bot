@@ -17,7 +17,7 @@ def get_bin_link(key: str) -> str:
     return f"https://hastebin.com/{key}"
 
 def start(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello! I can only be used in groups by typing the /code command for now!")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Hello! I can be used by typing the /code or /acode command!")
 
 def code(update, context):
     send_code_message(update, context, is_anonymous=False)
@@ -27,7 +27,7 @@ def anonymous_code(update, context):
 
 
 def generate_code_message(a, b):
-    return f"*Code Snippet*\n*From:* {a}\n*Link:* {b}\n\nSend spoiler-free code right now with `/code`!"
+    return f"*Code Snippet*\n*From:* {a}\n*Link:* {b}\n\nSend spoiler-free code right now with `/code` or `/acode`!"
 
 def send_code_message(update, context, is_anonymous):
     username = update.effective_user.username
@@ -36,6 +36,10 @@ def send_code_message(update, context, is_anonymous):
         code_body = update.message.text.replace("/acode", "").strip()
     else:
         code_body = update.message.text.replace("/code", "").strip()
+
+    if not code_body:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Please enter some code along with your command!\ne.g. `/code console.log(\"Hello World!\");`", parse_mode=telegram.ParseMode.MARKDOWN)
+        return
 
     if is_anonymous:
         displayed_name = "Anonymous"
