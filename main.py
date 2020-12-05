@@ -33,9 +33,9 @@ def send_code_message(update, context, is_anonymous):
     username = update.effective_user.username
     name = f"{update.effective_user.first_name} {update.effective_user.last_name}".strip()
     if is_anonymous:
-        code_body = update.message.text.replace("/acode", "").strip()
+        code_body = update.message.text.replace("/acode", "").replace("@NH_AOC_Bot", "").strip()
     else:
-        code_body = update.message.text.replace("/code", "").strip()
+        code_body = update.message.text.replace("/code", "").replace("@NH_AOC_Bot", "").strip()
 
     if not code_body:
         context.bot.send_message(chat_id=update.effective_chat.id, text="Please enter some code along with your command!\ne.g. `/code console.log(\"Hello World!\");`", parse_mode=telegram.ParseMode.MARKDOWN)
@@ -47,6 +47,8 @@ def send_code_message(update, context, is_anonymous):
         displayed_name = f"{name} (@{username})"
     else:
         displayed_name = name
+    
+    displayed_name = telegram.utils.helpers.escape_markdown(displayed_name)
 
     try:
         response = requests.post(bin_endpoint, data=code_body)
