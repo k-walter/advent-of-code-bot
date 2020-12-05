@@ -11,10 +11,10 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 updater = Updater(token=config.BOT_TOKEN, use_context=True)
 dispatcher = updater.dispatcher
 
-bin_endpoint = "https://hastebin.com/documents"
+bin_endpoint = "http://paste.nushackers.org/documents"
 
 def get_bin_link(key: str) -> str:
-    return f"https://hastebin.com/{key}"
+    return f"http://paste.nushackers.org/{key}"
 
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Hello! I can be used by typing the /code or /acode command!")
@@ -51,12 +51,12 @@ def send_code_message(update, context, is_anonymous):
     try:
         response = requests.post(bin_endpoint, data=code_body)
     except:
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Timed out, unable to create hastebin. Please ping @chrisgzf to ask him to fix.")
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Timed out, unable to create paste. Please ping @chrisgzf to ask him to fix.")
         logging.error(response)
         return
 
     if (response.status_code != 200):
-        context.bot.send_message(chat_id=update.effective_chat.id, text="Unable to create hastebin. Please ping @chrisgzf to ask him to fix.")
+        context.bot.send_message(chat_id=update.effective_chat.id, text="Unable to create paste. Please ping @chrisgzf to ask him to fix.")
         logging.error(response)
         logging.error(response.text)
         return
