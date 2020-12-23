@@ -30,11 +30,10 @@ def generate_code_message(a, b):
     return f"*Code Snippet*\n*From:* {a}\n*Link:* {b}\n\nSend spoiler-free code right now with `/code` or `/acode`!"
 
 def send_code_message(update, context, is_anonymous):
-    username = update.effective_user.username
+    username = update.effective_user.username or ''
     first_name = update.effective_user.first_name or ''
     last_name = update.effective_user.last_name or ''
     name = f"{first_name} {last_name}".strip()
-    is_anonymous = is_anonymouse or not username
     
     if is_anonymous:
         code_body = update.message.text.replace("/acode", "").replace("@NH_AOC_Bot", "").strip()
