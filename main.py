@@ -31,7 +31,11 @@ def generate_code_message(a, b):
 
 def send_code_message(update, context, is_anonymous):
     username = update.effective_user.username
-    name = f"{update.effective_user.first_name} {update.effective_user.last_name}".strip()
+    first_name = update.effective_user.first_name or ''
+    last_name = update.effective_user.last_name or ''
+    name = f"{first_name} {last_name}".strip()
+    is_anonymous = is_anonymouse or not username
+    
     if is_anonymous:
         code_body = update.message.text.replace("/acode", "").replace("@NH_AOC_Bot", "").strip()
     else:
